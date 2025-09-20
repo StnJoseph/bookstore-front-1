@@ -18,7 +18,7 @@ export default function ServicesPage() {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Servicios Disponibles</h1>
+      <h1 className="text-3xl font-bold mb-6">Autores Disponibles</h1>
       <ul className="space-y-4">
         {services.map((service) => (
           <li key={service.id} className="p-4 border rounded-lg shadow-sm">
