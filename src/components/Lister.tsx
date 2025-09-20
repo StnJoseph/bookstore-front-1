@@ -55,11 +55,11 @@ export default function Lister() {
         
     return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Servicios Disponibles</h1>
       <ul className="space-y-4">
         {data?.map((author) => 
           <li key={author.id} className="p-4 border rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">{author.name}</h2>
+            <h1 className="text-xl font-semibold">{author.name}</h1>
+            <h2 className="text-xl font-semibold">{author.birthDate}</h2>
             <p className="text-gray-600">{author.description}</p>
           </li>
         )}

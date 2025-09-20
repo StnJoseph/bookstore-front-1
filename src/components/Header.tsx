@@ -12,14 +12,13 @@ const Header = ({ routes }: { routes: Route[] }) => {
     <header className="bg-yellow-300 text-black p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-3">
-          {/* We assume you have a logo.png in the public/ folder. */}
           <Image
-            src="/logo.png"
+            src="/logo.jpg"
             alt="Logo de SeneTime"
             width={40}
             height={40}
           />
-          <span className="text-2xl font-semibold">SeneTime</span>
+          <span className="text-2xl font-semibold">The Author</span>
         </Link>
         <nav>
           {routes.map((route) => (
