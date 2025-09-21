@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { AuthorCreate } from "@/services/authorService";
 import { useAuthors } from "@/hooks/useAuthorServices";
 
-export default function AuthorForm() {
+export default function AuthorCreate() {
   const router = useRouter();
   const { create } = useAuthors(false); // no hace fetch inicial
   const [form, setForm] = useState<AuthorCreate>({
