@@ -12,21 +12,18 @@ export default function AuthorModify() {
   const { authors, getById, update, reload, loading, error } = useAuthors();
   const author = useMemo(() => getById(id), [getById, id]);
 
-  // Si el autor no está aún en memoria, intenta recargar
   useEffect(() => {
     if (!author && !loading) void reload();
   }, [author, loading, reload]);
 
-  // Estado local del formulario (parcial: AuthorUpdate)
+  // Estado local del formulario 
   const [form, setForm] = useState<AuthorUpdate>({
     name: "",
     birthDate: "",
     image: "",
     description: "",
-    // books y prizes se omiten para el ejemplo (puedes añadirlos si los editas)
   });
 
-  // Cuando llegue el autor, precarga el form
   useEffect(() => {
     if (author) {
       setForm({
@@ -51,7 +48,6 @@ export default function AuthorModify() {
     setSubmitting(true);
     setError(null);
     try {
-      // Valida lo mínimo
       if (!form.name?.trim()) throw new Error("El nombre es obligatorio");
       if (!form.birthDate) throw new Error("La fecha de nacimiento es obligatoria");
 

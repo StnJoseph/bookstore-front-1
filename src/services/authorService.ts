@@ -40,7 +40,7 @@ export type Author = {
 export type AuthorCreate = Omit<Author, "id">;
 export type AuthorUpdate = Partial<Omit<Author, "id">>;
 
-
+// La dejo aqui pq arriba se daña
 const AUTHORS_URL = "http://127.0.0.1:8080/api/authors";
 
 async function assertOk(res: Response): Promise<void> {
@@ -49,7 +49,6 @@ async function assertOk(res: Response): Promise<void> {
     try {
       detail = await res.text();
     } catch {
-      /* ignore */
     }
     const trimmed = detail.slice(0, 300);
     throw new Error(`HTTP ${res.status} ${res.statusText}${trimmed ? ` – ${trimmed}` : ""}`);
@@ -61,7 +60,7 @@ export async function getAuthors(): Promise<Author[]> {
   const res = await fetch(AUTHORS_URL, { headers: { Accept: "application/json" }, cache: "no-store" });
   await assertOk(res);
   const json: unknown = await res.json();
-  return json as Author[]; // la API devuelve un array directo
+  return json as Author[];
 }
 
 export async function getAuthor(id: number | string): Promise<Author> {
