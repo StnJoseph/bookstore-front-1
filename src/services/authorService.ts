@@ -84,7 +84,7 @@ export async function createAuthor(payload: AuthorCreate): Promise<Author> {
 
 export async function updateAuthor(id: number | string, payload: AuthorUpdate): Promise<Author> {
   const res = await fetch(`${AUTHORS_URL}/${id}`, {
-    method: "PATCH", // usa "PUT" si tu backend lo requiere
+    method: "PUT",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify(payload),
   });

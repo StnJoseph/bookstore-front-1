@@ -9,7 +9,7 @@ export default function AuthorsLayout({
 }) {
   const routes = [
     { name: "Adicionar autor", path: "/autores/crear" },
-    // { name: "Inventario", path: "/autores/inventory" },
+    // { name: "Editar", path: "/autores/${id}/editar" },
     // { name: "Gestionar Servicios", path: "/autores/gestionar servicios" },
     
   ];
