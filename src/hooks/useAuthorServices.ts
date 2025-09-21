@@ -1,37 +1,51 @@
+"use client";
 
-"use client"; // Hooks that use useState/useEffect should be for the client.
+import { useCallback, useEffect, useState } from "react";
+import { getAuthors, createAuthor, updateAuthor, deleteAuthor, type Author, type AuthorCreate, type AuthorUpdate} from "@/services/authorService";
 
-import { useState, useEffect } from "react";
-import { Service, fetchAuthorServices } from "@/services/authorService";
+export function useAuthors(initialFetch = true) {
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState<string | null>(null);
 
-export function useAuthorServices() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const reload = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getAuthors();
+      setAuthors(data);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Error al cargar autores");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const loadServices = async () => {
-      try {
-        // We reset the status with each new load
-        setIsLoading(true);
-        setError(null);
-        const data = await fetchAuthorServices();
-        setServices(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Ocurrió un error desconocido.");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (initialFetch) void reload();
+  }, [initialFetch, reload]);
 
-    loadServices();
-  }, []); // Empty array so that it runs only once.
+  const create = useCallback(async (payload: AuthorCreate) => {
+    const created = await createAuthor(payload);
+    setAuthors(prev => [created, ...prev]);
+    return created;
+  }, []);
 
-  // We return the state and, potentially, functions to reload.
-  return { services, isLoading, error };
+  const update = useCallback(async (id: number | string, payload: AuthorUpdate) => {
+    const updated = await updateAuthor(id, payload);
+    setAuthors(prev => prev.map(a => (a.id === Number(id) ? updated : a)));
+    return updated;
+  }, []);
+
+  const remove = useCallback(async (id: number | string) => {
+    await deleteAuthor(id);
+    setAuthors(prev => prev.filter(a => a.id !== Number(id)));
+  }, []);
+
+  const getById = useCallback(
+    (id: number | string) => authors.find(a => a.id === Number(id)) ?? null,
+    [authors]
+  );
+
+  return { authors, loading, error, reload, create, update, remove, getById };
 }
-

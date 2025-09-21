@@ -8,7 +8,7 @@ export default function AuthorsLayout({
   children: React.ReactNode;
 }) {
   const routes = [
-    { name: "Adicionar nuevo autor", path: "/autores/crear" },
+    { name: "Adicionar autor", path: "/autores/crear" },
     { name: "Inventario", path: "/autores/inventory" },
     // { name: "Gestionar Servicios", path: "/autores/gestionar servicios" },
     
@@ -16,7 +16,9 @@ export default function AuthorsLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Header routes={routes} />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow">
+        {children}
+      </main>
       <Footer />
     </div>
   );

@@ -1,38 +1,99 @@
-export interface Service {
+export type Organization = {
+  id: number;
+  name: string;
+  tipo: string;
+};
+
+export type Prize = {
+  id: number;
+  premiationDate: string;
+  name: string;
+  description: string;
+  organization: Organization;
+};
+
+export type Editorial = {
+  id: number;
+  name: string;
+};
+
+export type Book = {
+  id: number;
+  name: string;
+  isbn: string;
+  image: string;
+  publishingDate: string;
+  description: string;
+  editorial: Editorial;
+};
+
+export type Author = {
   id: number;
   birthDate: string;
   name: string;
   description: string;
   image: string;
+  books: Book[];
+  prizes: Prize[];
+};
+
+export type AuthorCreate = Omit<Author, "id">;
+export type AuthorUpdate = Partial<Omit<Author, "id">>;
+
+
+const AUTHORS_URL = "http://127.0.0.1:8080/api/authors";
+
+async function assertOk(res: Response): Promise<void> {
+  if (!res.ok) {
+    let detail = "";
+    try {
+      detail = await res.text();
+    } catch {
+      /* ignore */
+    }
+    const trimmed = detail.slice(0, 300);
+    throw new Error(`HTTP ${res.status} ${res.statusText}${trimmed ? ` – ${trimmed}` : ""}`);
+  }
 }
 
-export const fetchAuthorServices = (): Promise<Service[]> => {
-  const services: Service[] = [
-    {
-      id:1000, 
-      birthDate:"1965-07-31",
-      name:"J.K. Rowling",
-      description:"Joanne Rowling, who writes under the pseudonyms J. K. Rowling and Robert Galbraith, is an English writer, film producer and screenwriter, best known as the author of the Harry Potter series of books.",
-      image:"https://static1.mujerhoy.com/www/multimedia/202007/20/media/cortadas/jk-rowling-polemica-transfobia-k0TB-U110849049600hyD-624x936@MujerHoy.jpg"
-    },
-    {
-      id:1001,
-      birthDate:"1947-09-21",
-      name:"Stephen King",
-      description:"Stephen Edwin King, better known as Stephen King and occasionally by his pen name Richard Bachman, is an American writer of horror novels, supernatural fiction, mystery, science fiction and fantasy literature.",
-      image:"https://imagessl.casadellibro.com/img/autores/292.jpg"
-    }
-  ];
-  // We simulate asynchrony and the possibility of error.
-  return new Promise((resolve, reject) => {
-    const delay = Math.floor(Math.random() * 1500) + 500; // Delay between 0.5 y 2 seconds
-    setTimeout(() => {
-      if (Math.random() < 0.2) {
-        // 20% probability of error
-        reject(new Error("Error de red simulado al obtener servicios."));
-      } else {
-        resolve(services);
-      }
-    }, delay);
+// ===== CRUD =====
+export async function getAuthors(): Promise<Author[]> {
+  const res = await fetch(AUTHORS_URL, { headers: { Accept: "application/json" }, cache: "no-store" });
+  await assertOk(res);
+  const json: unknown = await res.json();
+  return json as Author[]; // la API devuelve un array directo
+}
+
+export async function getAuthor(id: number | string): Promise<Author> {
+  const res = await fetch(`${AUTHORS_URL}/${id}`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  await assertOk(res);
+  const json: unknown = await res.json();
+  return json as Author;
+}
+
+export async function createAuthor(payload: AuthorCreate): Promise<Author> {
+  const res = await fetch(AUTHORS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
   });
-};
+  await assertOk(res);
+  const json: unknown = await res.json();
+  return json as Author;
+}
+
+export async function updateAuthor(id: number | string, payload: AuthorUpdate): Promise<Author> {
+  const res = await fetch(`${AUTHORS_URL}/${id}`, {
+    method: "PATCH", // usa "PUT" si tu backend lo requiere
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+  });
+  await assertOk(res);
+  const json: unknown = await res.json();
+  return json as Author;
+}
+
+export async function deleteAuthor(id: number | string): Promise<void> {
+  const res = await fetch(`${AUTHORS_URL}/${id}`, { method: "DELETE" });
+  await assertOk(res);
+}
