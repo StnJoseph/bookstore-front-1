@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useAuthors } from "@/hooks/useAuthorServices";
+import { useTranslation } from "react-i18next";
+
 
 export default function Lister() {
   const { authors, loading, error, remove } = useAuthors();
+  const { t } = useTranslation();
 
   const onDelete = async (id:number, name:string) => {
     if (!confirm(`¿Eliminar a ${name}?`)) return;
@@ -31,12 +34,12 @@ export default function Lister() {
             <Link
               href={`/autores/${author.id}/editar`}
               className="inline-block rounded bg-black px-3 py-1 text-white hover:opacity-90" aria-label={`Editar ${author.name}`}>
-              Editar
+                {t("about.editButton")}
             </Link>
             <button
               type="button"
               className="rounded border px-3 py-1 hover:bg-gray-50" onClick={() => onDelete(author.id, author.name)}>
-              Eliminar
+                {t("about.deleteButton")}
             </button>
           </div>
         </li>

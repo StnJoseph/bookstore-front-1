@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAuthors } from "@/hooks/useAuthorServices";
 import type { AuthorUpdate } from "@/services/authorService";
+import { useTranslation } from "react-i18next";
+
 
 export default function AuthorModify() {
   const router = useRouter();
@@ -11,6 +13,8 @@ export default function AuthorModify() {
 
   const { authors, getById, update, reload, loading, error } = useAuthors();
   const author = useMemo(() => getById(id), [getById, id]);
+  const { t } = useTranslation(); 
+
 
   useEffect(() => {
     if (!author && !loading) void reload();
@@ -69,7 +73,7 @@ export default function AuthorModify() {
       {formError && <div className="text-red-600">{formError}</div>}
 
       <div className="grid gap-2">
-        <label className="text-sm font-medium">Nombre</label>
+        <label className="text-sm font-medium">{t("about.name")}</label>
         <input
           name="name"
           value={form.name ?? ""}
@@ -80,7 +84,7 @@ export default function AuthorModify() {
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-medium">Fecha de nacimiento</label>
+        <label className="text-sm font-medium">{t("about.birthDay")}</label>
         <input
           type="date"
           name="birthDate"
@@ -92,7 +96,7 @@ export default function AuthorModify() {
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-medium">Imagen (URL)</label>
+        <label className="text-sm font-medium">{t("about.image")}</label>
         <input
           name="image"
           value={form.image ?? ""}
@@ -103,7 +107,7 @@ export default function AuthorModify() {
       </div>
 
       <div className="grid gap-2">
-        <label className="text-sm font-medium">Descripción</label>
+        <label className="text-sm font-medium">{t("about.description")}</label>
         <textarea
           name="description"
           value={form.description ?? ""}
@@ -119,7 +123,7 @@ export default function AuthorModify() {
         disabled={submitting}
         className="bg-black text-white rounded px-4 py-2 disabled:opacity-60"
       >
-        {submitting ? "Guardando…" : "Guardar cambios"}
+        {submitting ? t("about.saving") : t("about.saveChanges")}
       </button>
     </form>
   );
