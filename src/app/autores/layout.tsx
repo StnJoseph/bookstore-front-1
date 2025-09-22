@@ -8,7 +8,7 @@ export default function AuthorsLayout({
   children: React.ReactNode;
 }) {
   const routes = [
-    { name: "Adicionar autor", path: "/autores/crear" },
+    { name: "t:about.addAuthorButton", path: "/autores/crear" },
     // { name: "Editar", path: "/autores/${id}/editar" },
     // { name: "Gestionar Servicios", path: "/autores/gestionar servicios" },
     
