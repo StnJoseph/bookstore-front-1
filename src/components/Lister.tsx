@@ -38,6 +38,11 @@ export default function Lister() {
               className="rounded border px-3 py-1 hover:bg-gray-50" onClick={() => onDelete(author.id, author.name)}>
               Eliminar
             </button>
+            <button
+              type="button"
+              className="rounded border px-3 py-1 hover:bg-gray-50" onClick={() => null}>
+              Favorito
+            </button>
           </div>
         </li>
       )}

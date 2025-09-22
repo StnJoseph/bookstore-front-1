@@ -1,3 +1,11 @@
+La solución propuesta se basa adicionar un nuevo boton "Favoritos" en el lister y copiar la misma estructura de este formulario para el nuevo componente Favorites. En él se eliminan los botones pues solo se lista la info de aquellos que estan seleccionados. Para que esta información se muestre adiciono otra ruta en el encabezado de la pagina de autores para poder acceder a ella.
+
+Se intentpó el componente contuviera estos elementos recibiendo el id pero esto no fue posible.
+
+En la segunda parte se optó por realizar accesibilidad al definir estos elementos para el boton de favoritos.
+
+Para correr el aplicativo basta con correr el backend como se encunció en el preparcial y al correr el aplicativo front acceder con la ruta /autores/ pues esta es la pagina principal desde donde se ve toda la info.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
